@@ -29,3 +29,5 @@ ERC-20 `EnigCredit`: fixed initial supply to deployer + owner-gated `mint` (facu
 ## Tooling
 Slither (`slither.config.json`, CI job) · Foundry fuzz + invariant (`test/Invariant.t.sol`) · `forge test --gas-report`.
 Refs: EEA EthTrust v3 + Checklist; OWASP SCSVS/SCSTG/SCWE; Solidity Security Considerations; OpenZeppelin docs.
+
+> **4-slice note:** ratings live in `Reputation.sol` (member4), which reads completed-sale state from the Marketplace. Same guards (only buyer, only Sold, once per listing, 1–5) — see `docs/reputation-module.md`.

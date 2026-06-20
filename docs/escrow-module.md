@@ -1,4 +1,4 @@
-# Slice 3 — Buy · Escrow · Ratings (`Marketplace` escrow/ratings)
+# Slice 3 — Escrow / Trade (`Marketplace` escrow)
 > Owner: member3 · Branch: `feature/member3-escrow` · co-owns `Marketplace.sol` with member2.
 
 ## Implements
@@ -21,3 +21,6 @@ cancel-after-timeout refunds · rate + average · rate-twice revert · rate-unso
 
 ## TODO checklist
 - [ ] step-indicator UI · [ ] skip approve if allowance sufficient · [ ] star-picker widget.
+
+
+> Ratings moved to **Slice 4 / `Reputation.sol`** (member4). This slice is escrow only: purchase (incl. `purchaseWithPermit`), confirm, cancel-after-timeout.

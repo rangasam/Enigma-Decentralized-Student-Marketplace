@@ -35,3 +35,7 @@ Seller                Marketplace (escrow)              Buyer
 ## Concepts demonstrated (course mapping)
 dApp (no server) · ERC-20 token economics (ENGC) · escrow pattern · trustless dispute (timeout refund) ·
 reentrancy protection (`nonReentrant`) · on-chain event indexing (listings/ratings) · testnet deploy + verify.
+
+
+## 4-slice update (Reputation split)
+Contracts are now three: **EnigCredit** (ERC-20), **Marketplace** (listings + escrow), **Reputation** (ratings, reads Marketplace). Member4 owns `Reputation.sol`. Flow: list → purchase(escrow) → confirmDelivery(Sold) → `Reputation.rateUser`.

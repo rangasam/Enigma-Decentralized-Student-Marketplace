@@ -20,3 +20,5 @@ ERC-20 storage anatomy · ERC-20 with OpenZeppelin · allowance security (ERC-26
 access-control design · testing token contracts · token security properties · ABI & app integration · web3 (ethers.js) · deployment & verification.
 Refs: Ethereum.org token standards · EIPs · Solidity docs · OpenZeppelin Contracts + Access Control · EEA EthTrust v3 + Checklist · OWASP SCSVS/SCSTG/SCWE · Slither · Foundry fuzz/invariant.
 Course PDFs: `resources/applied-blockchain-technology/lab2/` (Ethereum-Token, SmartContractSecurity, smartContractDev, Foundations, Consensus, bitcoin).
+
+| Reputation.sol (member4) | On-chain reputation, reads cross-contract sale state | Ethereum-Token §Events; SmartContractSecurity |

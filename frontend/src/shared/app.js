@@ -20,6 +20,7 @@ function build(runner) {
   return {
     token:       new ethers.Contract(a.EnigCredit,  ABIS.EnigCredit,  runner),
     marketplace: new ethers.Contract(a.Marketplace, ABIS.Marketplace, runner),
+    reputation:  new ethers.Contract(a.Reputation,  ABIS.Reputation,  runner),
   };
 }
 export function readContracts()        { return build(readProvider()); }

@@ -1,0 +1,20 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Reputation / Ratings · Marketplace</title>
+<link rel="stylesheet" href="../../shared/layout.css"/></head>
+<body>
+<header class="enigma-header"><h1>4 · Reputation / Ratings <span class="owner">member4</span></h1>
+  <p class="scenario">After a completed (Sold) trade, the buyer rates the seller 1–5. Averages are read on-chain.</p>
+  <label class="netrow">Network: <select id="net" class="net"></select></label></header>
+<main><div class="card">
+  <button id="connect">Connect wallet (buyer)</button>
+  <p id="who" class="muted"></p>
+  <input id="id" placeholder="listing id of a completed sale"/>
+  <input id="stars" placeholder="rating 1–5"/>
+  <button id="rate">Submit rating</button>
+  <h3>Seller reputation</h3>
+  <input id="seller" placeholder="0x… seller (or leave blank to use listing seller)"/>
+  <button id="avg" class="secondary">Show average</button>
+  <pre id="out" class="out"></pre>
+</div></main>
+<script type="module" src="reputation.js"></script></body></html>
