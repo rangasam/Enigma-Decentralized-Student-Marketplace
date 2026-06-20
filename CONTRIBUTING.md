@@ -155,7 +155,7 @@ Branch protection requires **at least one approving review** before merge, and *
 
 ---
 
-## develop → main (instructor only)
+## develop → main (owners only)
 
 When all four slice PRs are merged to `develop` and the group is ready to submit:
 
