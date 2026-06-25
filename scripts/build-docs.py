@@ -19,6 +19,8 @@ PAGES = [
      "Branch model, the commit → PR → merge workflow, CI gates, and the review checklist."),
     ("docs/PROCEDURES.md", "procedures.html", "Procedures",
      "Build, validate, troubleshoot, deploy, and the local/hosted GUI test procedure."),
+    ("docs/publications.md", "publications.html", "Publications",
+     "The 2-page IEEE paper (modular LaTeX): source, per-section Markdown mirrors, and the compiled PDF."),
 ]
 NAV = [("index.html", "Docs Home")] + [(o, t) for _, o, t, _ in PAGES] + [("../tracker/index.html", "Tracker")]
 
