@@ -57,6 +57,9 @@ forge script script/Deploy.s.sol:Deploy --rpc-url http://127.0.0.1:8545 --broadc
 # ABIs into shared/abi.js, then open frontend/src/index.html
 ```
 
+> 📸 **Validate the token slice on both networks** (Local Anvil + Hosted Sepolia), step by step with
+> screenshots: [`docs/network-tests.md`](docs/network-tests.md). CLI details: [`docs/PROCEDURES.md`](docs/PROCEDURES.md).
+
 ## Hosted demo on GitHub Pages (Sepolia)
 ```bash
 forge script script/Deploy.s.sol:Deploy --rpc-url $SEPOLIA_RPC_URL --private-key $PRIVATE_KEY --broadcast --verify
