@@ -1,0 +1,70 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Why Blockchain · Enigma Docs</title>
+<link rel="stylesheet" href="docs.css"></head>
+<body>
+<header class="topbar"><a class="brand" href="../index.html">⟵ Enigma Demo</a><nav><a href="index.html">Docs Home</a><a href="why-blockchain.html">Why Blockchain</a><a href="network-tests.html">Network Tests</a><a href="contributing.html">Workflow</a><a href="procedures.html">Procedures</a><a href="publications.html">Publications</a><a href="security.html">Security</a><a href="../tracker/index.html">Tracker</a></nav></header>
+<main class="doc">
+<h1 id="why-this-project--and-why-blockchain">Why This Project — and Why Blockchain</h1>
+<p>This page explains <strong>why we chose the Enigma marketplace</strong>, <strong>why it matters</strong>, <strong>why a public blockchain is the correct solution</strong>, and <strong>how the project meets the standard suitability and security criteria</strong> that distinguish a well-justified blockchain application from one that merely uses the technology.</p>
+<h2 id="why-this-project-and-why-its-important">Why this project, and why it's important</h2>
+<p>Online marketplaces are central to how communities exchange goods, yet they concentrate <strong>trust, custody, and dispute resolution</strong> in a single intermediary that charges fees, can fail, and must be trusted not to misbehave. For a campus community trading low-value items, that intermediary is both costly and unnecessary. Enigma asks whether a marketplace's core trust functions — <strong>value, listings, escrow, and reputation</strong> — can instead be enforced entirely by public smart contracts, making custody, settlement, and reputation <strong>auditable</strong> while removing the single point of failure. The pattern is broadly important: escrowed peer-to-peer commerce recurs in resale, freelance milestones, and rental deposits.</p>
+<h2 id="why-blockchain-is-the-correct-solution">Why blockchain is the correct solution</h2>
+<p>We apply the widely-cited suitability test of <strong>Wüst &amp; Gervais, <em>"Do you need a blockchain?"</em></strong>. A public blockchain is warranted when <strong>all</strong> of the following hold — and Enigma satisfies each:</p>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Enigma</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>State must be stored</td>
+<td>Balances, listings, escrow, and reputation are persistent shared state.</td>
+</tr>
+<tr>
+<td>Multiple parties write</td>
+<td>Many buyers and sellers create listings, purchase, confirm, and rate.</td>
+</tr>
+<tr>
+<td>Writers are mutually distrusting</td>
+<td>Buyers and sellers are strangers with conflicting incentives.</td>
+</tr>
+<tr>
+<td>No trusted third party is desired</td>
+<td>We explicitly remove the escrow company / platform operator.</td>
+</tr>
+<tr>
+<td>Public verifiability is valuable</td>
+<td>Auditable custody and tamper-evident reputation is the whole point.</td>
+</tr>
+</tbody>
+</table>
+<p>Because every criterion is met, a <strong>public, permissionless</strong> chain — not a database or a private ledger — is the appropriate foundation.</p>
+<h2 id="how-it-satisfies-blockchain-compatibility--suitability-metrics">How it satisfies blockchain compatibility / suitability metrics</h2>
+<p>The design maps directly onto the properties that justify a public blockchain:</p>
+<ul>
+<li><strong>Disintermediation</strong> — escrow and settlement are enforced by code, not a platform.</li>
+<li><strong>Trustlessness</strong> — correctness follows from contract logic and consensus, not operator honesty.</li>
+<li><strong>Immutability &amp; auditability</strong> — every state transition emits an event on an append-only ledger.</li>
+<li><strong>Transparency</strong> — anyone can verify balances and trade outcomes.</li>
+<li><strong>Availability</strong> — no single point of failure.</li>
+<li><strong>Interoperability</strong> — ENGC is a standard <strong>ERC-20</strong> (with <strong>EIP-2612</strong> permit), usable by any wallet, explorer, or exchange — it composes with the wider Ethereum ecosystem rather than a walled garden.</li>
+</ul>
+<h2 id="why-its-a-usable-real-world-use-case">Why it's a usable, real-world use case</h2>
+<p>The same <strong>escrow + reputation</strong> pattern underlies online resale, freelance/milestone payments, and rental deposits. The student marketplace is a concrete, <strong>low-risk instantiation</strong> that we deploy and exercise on the public <strong>Sepolia</strong> testnet and a local <strong>Anvil</strong> chain — demonstrating feasibility end-to-end, not just in theory.</p>
+<h2 id="how-it-meets-security-standards-what-sets-it-apart">How it meets security standards (what sets it apart)</h2>
+<p>What distinguishes Enigma among comparable projects is <strong>rigor</strong>: it is built <strong>exclusively on audited standards</strong>, its security properties are <strong>explicit and enforced</strong>, and every claim is backed by <strong>reproducible evidence</strong>.</p>
+<ul>
+<li><strong>Audited libraries</strong> — OpenZeppelin v5.1.0 (<code>ERC20</code>, <code>ERC20Permit</code>, <code>Ownable</code>, <code>ReentrancyGuard</code>, <code>SafeERC20</code>, <code>Pausable</code>).</li>
+<li><strong>Standards</strong> — EIP-20 token model + EIP-2612 signature approvals.</li>
+<li><strong>Reentrancy protection</strong> — checks-effects-interactions ordering plus <code>ReentrancyGuard</code> and <code>SafeERC20</code>.</li>
+<li><strong>Least privilege</strong> — owner-only issuance; a capped, rate-limited demo faucet adds no arbitrary-mint power.</li>
+<li><strong>Verification</strong> — unit, fuzz, and invariant tests plus <strong>Slither</strong> static analysis run as required CI on every pull request.</li>
+</ul>
+<p>See the <a href="security.html">Security Architecture &amp; Standards</a> page for the full technical breakdown, and the <a href="publications.html">Publications</a> page for the IEEE paper that formalizes this analysis.</p>
+
+</main>
+<footer>Enigma-Decentralized-Student-Marketplace · docs generated from Markdown by <code>scripts/build-docs.py</code></footer>
+</body></html>

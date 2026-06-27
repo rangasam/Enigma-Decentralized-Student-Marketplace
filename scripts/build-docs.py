@@ -13,6 +13,8 @@ PANDOC = shutil.which("pandoc") or "/opt/anaconda3/bin/pandoc"
 
 # (source markdown, output html, nav/title, one-line description for the index)
 PAGES = [
+    ("docs/why-blockchain.md", "why-blockchain.html", "Why Blockchain",
+     "Why this project and why a public blockchain is the correct solution — suitability criteria, compatibility metrics, real use case, and security standards."),
     ("docs/network-tests.md", "network-tests.html", "Network Tests",
      "Validate the Token + Wallet slice on Local Anvil and Hosted Sepolia, step by step with screenshots."),
     ("CONTRIBUTING.md", "contributing.html", "Workflow",
