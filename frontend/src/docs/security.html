@@ -1,0 +1,96 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Security · Enigma Docs</title>
+<link rel="stylesheet" href="docs.css"></head>
+<body>
+<header class="topbar"><a class="brand" href="../index.html">⟵ Enigma Demo</a><nav><a href="index.html">Docs Home</a><a href="network-tests.html">Network Tests</a><a href="contributing.html">Workflow</a><a href="procedures.html">Procedures</a><a href="publications.html">Publications</a><a href="security.html">Security</a><a href="../tracker/index.html">Tracker</a></nav></header>
+<main class="doc">
+<h1 id="security-architecture--standards">Security Architecture &amp; Standards</h1>
+<p>Security is a first-class design goal of the Enigma Marketplace, not an afterthought. Rather than hand-rolling token, access-control, or transfer logic, every sensitive primitive is delegated to <strong>audited, community-reviewed <a href="https://docs.openzeppelin.com/contracts/5.x/">OpenZeppelin</a> v5.1.0 libraries</strong> and established Ethereum standards. This minimizes the custom attack surface and inherits years of audits and battle-testing.</p>
+<blockquote>
+<p>This page covers the <strong>technical</strong> security design. For operational policy (no secrets in the repo, testnet-only, PII, screenshot redaction, key rotation), see <a href="https://github.com/enigma-group-project/Enigma-Decentralized-Student-Marketplace/blob/main/SECURITY.md"><code>SECURITY.md</code></a>.</p>
+</blockquote>
+<h2 id="1-standard-audited-building-blocks-openzeppelin">1. Standard, audited building blocks (OpenZeppelin)</h2>
+<p><code>EnigCredit</code> and <code>Marketplace</code> compose only standard OpenZeppelin modules:</p>
+<table>
+<thead>
+<tr>
+<th>Concern</th>
+<th>OpenZeppelin module</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Token model</td>
+<td><code>ERC20</code></td>
+<td>Canonical, interoperable fungible-token semantics — wallets, explorers, and tooling understand it natively.</td>
+</tr>
+<tr>
+<td>Gasless approvals</td>
+<td><code>ERC20Permit</code> (EIP-2612)</td>
+<td>Buyers authorize escrow with an <strong>off-chain signature</strong> instead of a separate <code>approve</code> transaction — fewer transactions, no lingering allowances.</td>
+</tr>
+<tr>
+<td>Supply reduction</td>
+<td><code>ERC20Burnable</code></td>
+<td>Standard, safe burn path.</td>
+</tr>
+<tr>
+<td>Access control</td>
+<td><code>Ownable</code></td>
+<td>Single, explicit privileged role for credit issuance.</td>
+</tr>
+<tr>
+<td>Reentrancy</td>
+<td><code>ReentrancyGuard</code></td>
+<td><code>nonReentrant</code> mutex on every fund-moving function.</td>
+</tr>
+<tr>
+<td>Safe transfers</td>
+<td><code>SafeERC20</code></td>
+<td>Wraps token transfers so non-compliant / non-reverting tokens can't silently fail.</td>
+</tr>
+<tr>
+<td>Emergency stop</td>
+<td><code>Pausable</code></td>
+<td>Owner can halt state changes if a flaw is discovered.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-the-erc-20-transaction-model">2. The ERC-20 transaction model</h2>
+<p>Credits are a standard <strong>ERC-20</strong> token (<code>EnigCredit</code>, symbol <code>ENGC</code>). Using the standard — rather than a bespoke balance ledger — means transfers, allowances, and events follow well-understood, formally specified semantics that are already supported by MetaMask, Etherscan, and ethers.js. Payments flow through the <strong>allowance/escrow</strong> pattern: the buyer authorizes the <code>Marketplace</code> (via <code>approve</code> or, ideally, a single <strong>EIP-2612 <code>permit</code></strong> signature), and the contract pulls funds into escrow with <code>SafeERC20</code>.</p>
+<h2 id="3-reentrancy-protection-defence-in-depth">3. Reentrancy protection (defence in depth)</h2>
+<p>Every function that moves value (<code>purchaseItem</code>, <code>confirmDelivery</code>, <code>cancelPurchase</code>, <code>rateUser</code>) applies <strong>two independent defences</strong>:</p>
+<ol type="1">
+<li><strong>Checks-Effects-Interactions (CEI):</strong> all validation and <strong>state updates happen before</strong> any external call or token transfer, so a malicious callback cannot observe or re-enter mid-update.</li>
+<li><strong><code>ReentrancyGuard</code> (<code>nonReentrant</code>):</strong> a mutex that blocks nested re-entry even if an interaction is reachable.</li>
+</ol>
+<p>Token movements use <strong><code>SafeERC20</code></strong> (<code>safeTransfer</code> / <code>safeTransferFrom</code>) so a misbehaving token cannot break accounting by returning <code>false</code> or no value.</p>
+<h2 id="4-access-control--least-privilege">4. Access control &amp; least privilege</h2>
+<ul>
+<li><strong>Owner-only issuance:</strong> arbitrary minting is restricted to the deployer via <code>Ownable</code>'s <code>onlyOwner</code>.</li>
+<li><strong>Capped public faucet (demo only):</strong> <code>faucet()</code> lets any wallet self-serve a <strong>fixed 1,000 ENGC with a 1-hour cooldown</strong> — a <em>demo affordance</em> that adds no arbitrary-mint power. Production issuance stays owner-gated.</li>
+<li><strong>Action binding:</strong> only the <strong>buyer</strong> of a <strong>completed</strong> sale can <code>confirmDelivery</code> or <code>rateUser</code>, and each listing can be rated <strong>once</strong> — preventing payment redirection and reputation forgery.</li>
+</ul>
+<h2 id="5-escrow--dispute-safety">5. Escrow &amp; dispute safety</h2>
+<p>Buyer funds are held <strong>in the contract</strong>, not sent to the seller, until the buyer confirms delivery. A <strong>timeout-based refund</strong> (<code>cancelPurchase</code>) protects the buyer if a seller never delivers, giving a trustless dispute path without a central arbiter.</p>
+<h2 id="6-language-level--coding-standard-protections">6. Language-level &amp; coding-standard protections</h2>
+<ul>
+<li><strong>Solidity 0.8.20</strong> — built-in checked arithmetic (overflow/underflow revert by default).</li>
+<li><strong>Custom errors</strong> — gas-efficient, explicit revert reasons (<code>NotBuyer</code>, <code>BadRating</code>, <code>AlreadyRated</code>, …).</li>
+<li><strong>Pinned dependencies</strong> — OpenZeppelin pinned to <strong>v5.1.0</strong> for reproducible, reviewed builds.</li>
+<li><strong>Events</strong> for every state transition, enabling off-chain indexing and auditability.</li>
+</ul>
+<h2 id="7-verification-tested-and-statically-analysed">7. Verification: tested and statically analysed</h2>
+<p>Security is continuously verified in CI on every pull request:</p>
+<ul>
+<li><strong>Unit tests</strong> (<code>forge test</code>) cover authorization, reverts, and the full escrow/rating lifecycle.</li>
+<li><strong>Fuzz &amp; invariant tests</strong> (<code>test/Invariant.t.sol</code>) — e.g. listing IDs are monotonic and no self-purchase is possible — explore thousands of randomized inputs.</li>
+<li><strong>Slither</strong> static analysis runs as a required CI job, flagging reentrancy, access-control, and unchecked-call patterns before merge.</li>
+</ul>
+<p>Together these standards — audited OpenZeppelin libraries, the ERC-20 model, layered reentrancy protection, least-privilege access control, and automated testing/analysis — give the marketplace a defensible, reviewable security posture appropriate for a trustless, multi-party application.</p>
+
+</main>
+<footer>Enigma-Decentralized-Student-Marketplace · docs generated from Markdown by <code>scripts/build-docs.py</code></footer>
+</body></html>

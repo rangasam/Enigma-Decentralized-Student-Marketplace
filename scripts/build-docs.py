@@ -21,6 +21,8 @@ PAGES = [
      "Build, validate, troubleshoot, deploy, and the local/hosted GUI test procedure."),
     ("docs/publications.md", "publications.html", "Publications",
      "The 2-page IEEE paper (modular LaTeX): source, per-section Markdown mirrors, and the compiled PDF."),
+    ("docs/security.md", "security.html", "Security",
+     "Security architecture & standards: audited OpenZeppelin libraries, the ERC-20 model, reentrancy protection, access control, and CI testing/analysis."),
 ]
 NAV = [("index.html", "Docs Home")] + [(o, t) for _, o, t, _ in PAGES] + [("../tracker/index.html", "Tracker")]
 
