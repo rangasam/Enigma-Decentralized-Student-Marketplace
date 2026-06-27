@@ -1,0 +1,19 @@
+name: Guard main source
+# Enforces the branch policy: only `develop` may be merged into `main`.
+# Any pull request targeting `main` from a branch other than `develop` fails
+# this required check and cannot be merged.
+on:
+  pull_request:
+    branches: [main]
+jobs:
+  only-develop-to-main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify PR source branch is develop
+        run: |
+          echo "PR: ${{ github.head_ref }} -> ${{ github.base_ref }}"
+          if [ "${{ github.head_ref }}" != "develop" ]; then
+            echo "::error::Only 'develop' may be merged into 'main'. This PR is from '${{ github.head_ref }}'. Open your PR against 'develop' instead."
+            exit 1
+          fi
+          echo "OK: develop -> main is allowed."
