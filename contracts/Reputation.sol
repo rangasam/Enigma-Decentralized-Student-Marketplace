@@ -20,7 +20,6 @@ contract Reputation is ReentrancyGuard {
         Marketplace.Listing memory listing = market.getListing(listingId);
 
         if (listing.status != Marketplace.Status.Sold) revert NotSold();
-        if (msg.sender != listing.buyer) revert NotBuyer();
         if (rating < 1 || rating > 5) revert BadRating();
         if (listingRated[listingId]) revert AlreadyRated();
 
