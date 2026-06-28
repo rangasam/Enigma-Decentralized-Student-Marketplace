@@ -1,4 +1,5 @@
-// Network config. Paste deployed addresses per network after `forge script Deploy`.
+// Network config. GitHub Actions can replace the Sepolia placeholders during deployment.
+// Local development falls back to the hardcoded values below.
 export const NETWORKS = {
   anvil: {
     label: "Local Anvil (dev)", chainId: 31337, rpcUrl: "http://127.0.0.1:8545", explorer: "",
@@ -6,7 +7,11 @@ export const NETWORKS = {
   },
   sepolia: {
     label: "Sepolia (hosted demo)", chainId: 11155111, rpcUrl: "https://ethereum-sepolia-rpc.publicnode.com", explorer: "https://sepolia.etherscan.io",
-    addresses: { EnigCredit: "0x31627B4593B3384BD835889F1Df5473ebcbF0de5", Marketplace: "0xA18A3852df23d161EfD8D7772CBdE9FA254905cb", Reputation: "0x64c9edB8e9f5d26508E750dd921E3C680e007A6C" },
+    addresses: {
+      EnigCredit: "__ENIG_CREDIT_ADDRESS__",
+      Marketplace: "__MARKETPLACE_ADDRESS__",
+      Reputation: "__REPUTATION_ADDRESS__",
+    },
   },
 };
 export const DEFAULT_NETWORK = "anvil";
