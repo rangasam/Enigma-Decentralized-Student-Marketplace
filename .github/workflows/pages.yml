@@ -28,7 +28,6 @@ jobs:
           sed -i "s|__ENIG_CREDIT_ADDRESS__|${ENIG_CREDIT_ADDRESS}|g" frontend/src/shared/config.js
           sed -i "s|__MARKETPLACE_ADDRESS__|${MARKETPLACE_ADDRESS}|g" frontend/src/shared/config.js
           sed -i "s|__REPUTATION_ADDRESS__|${REPUTATION_ADDRESS}|g" frontend/src/shared/config.js
-          sed -i 's|DEFAULT_NETWORK = "anvil"|DEFAULT_NETWORK = "sepolia"|g' frontend/src/shared/config.js
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
