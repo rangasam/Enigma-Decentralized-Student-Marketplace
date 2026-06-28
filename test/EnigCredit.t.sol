@@ -60,4 +60,29 @@ contract EnigCreditTest is Test {
         assertEq(token.allowance(signer, spender), value);
     }
 
+    // ---- Demo faucet ----
+    function test_FaucetMintsToCaller() public {
+        vm.prank(alice);
+        token.faucet();
+        assertEq(token.balanceOf(alice), token.FAUCET_AMOUNT());
+    }
+
+    function test_RevertWhen_FaucetWithinCooldown() public {
+        vm.startPrank(alice);
+        token.faucet();
+        vm.expectRevert(
+            abi.encodeWithSelector(EnigCredit.FaucetCooldown.selector, block.timestamp + token.FAUCET_COOLDOWN())
+        );
+        token.faucet();
+        vm.stopPrank();
+    }
+
+    function test_FaucetAgainAfterCooldown() public {
+        vm.startPrank(alice);
+        token.faucet();
+        vm.warp(block.timestamp + token.FAUCET_COOLDOWN());
+        token.faucet();
+        vm.stopPrank();
+        assertEq(token.balanceOf(alice), token.FAUCET_AMOUNT() * 2);
+    }
 }

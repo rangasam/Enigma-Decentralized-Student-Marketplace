@@ -25,4 +25,29 @@ contract EnigCredit is ERC20, ERC20Burnable, ERC20Permit, Ownable {
     }
     // burn(uint256) / burnFrom(address, uint356) inherrited from ERC20Burnable._allowances
     //permit(...) nonces / DOMAIN_SEPARATOR inherited from ERC20Permit (ERC+2612)
+
+    // ---------------------------------------------------------------------
+    // Demo faucet (DEMO AFFORDANCE — NOT for production)
+    // Public self-service top-up so any wallet can fund itself for the demo
+    // without involving the deployer key. Capped per claim + per-address
+    // cooldown. Owner-only `mint` above remains the only arbitrary issuance.
+    // ---------------------------------------------------------------------
+    uint256 public constant FAUCET_AMOUNT = 1_000 ether;     // 1,000 ENGC per claim
+    uint256 public constant FAUCET_COOLDOWN = 1 hours;        // per-address rate limit
+    mapping(address => uint256) public lastFaucetClaim;
+
+    event FaucetClaimed(address indexed to, uint256 amount);
+    error FaucetCooldown(uint256 availableAt);
+
+    /// @notice Claim a fixed amount of demo ENGC to your own wallet.
+    /// @dev Signed by the caller's own wallet; the deployer key is never used.
+    function faucet() external {
+        uint256 availableAt = lastFaucetClaim[msg.sender] + FAUCET_COOLDOWN;
+        if (lastFaucetClaim[msg.sender] != 0 && block.timestamp < availableAt) {
+            revert FaucetCooldown(availableAt);
+        }
+        lastFaucetClaim[msg.sender] = block.timestamp; // effect before interaction
+        _mint(msg.sender, FAUCET_AMOUNT);
+        emit FaucetClaimed(msg.sender, FAUCET_AMOUNT);
+    }
 }

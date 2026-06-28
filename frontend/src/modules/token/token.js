@@ -52,6 +52,28 @@ document.getElementById("mint").onclick = async () => {
   }
 };
 
+const faucetOut = (m, type = "") => {
+  const el = document.getElementById("faucet-out");
+  el.textContent = m;
+  el.className = "status-box" + (type ? " " + type : "");
+};
+
+document.getElementById("faucet").onclick = async () => {
+  if (!wc) { faucetOut("Connect your wallet via the sidebar first.", "err"); return; }
+  try {
+    faucetOut("Claiming demo ENGC from the faucet…", "pending");
+    const tx = await wc.token.faucet();
+    faucetOut("Waiting for confirmation… tx: " + tx.hash, "pending");
+    await tx.wait();
+    const bal = await readContracts().token.balanceOf(addr);
+    if (addr) loadBalance(addr);
+    faucetOut(`✅ Faucet claim confirmed.\nNew balance: ${formatTokens(bal)} ENGC`, "ok");
+  } catch (e) {
+    const msg = String(e.reason || e.shortMessage || e.message || e);
+    faucetOut(/FaucetCooldown/.test(msg) ? "⏳ Faucet cooldown active — try again later (1h per wallet)." : msg, "err");
+  }
+};
+
 // ── Single wallet entry point ─────────────────────────────────────────────
 mountSidebarWallet("wallet-section", ({ wc: w, address: a }) => {
   wc = w; addr = a;
