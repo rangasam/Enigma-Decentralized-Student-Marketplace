@@ -1,7 +1,5 @@
-import { readContracts, mountNetworkSelector, parseTokens, formatTokens } from "../../shared/app.js";
+import { readContracts, parseTokens, formatTokens } from "../../shared/app.js";
 import { mountSidebarWallet } from "../../shared/wallet.js";
-
-mountNetworkSelector("net");
 
 const outEl = document.getElementById("out");
 const out = (m, type = "") => {
