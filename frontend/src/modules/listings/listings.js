@@ -145,8 +145,8 @@ async function refreshListings() {
       const buyerRating = (status === "Pending" || status === "Sold") && listing.buyer && listing.buyer !== zeroAddr
         ? await fetchRating(listing.buyer)
         : ` <span class="rating-badge">⭐ 0.0</span>`;
-      // Sellers don't appear in the browse grid, so alreadyRatedBuyer is always false here
-      return buildCard(id, listing, status, false, sellerRating, buyerRating, false);
+      const alreadyRatedBuyer = status === "Sold" ? await hasSellerRatedBuyer(id) : false;
+      return buildCard(id, listing, status, false, sellerRating, buyerRating, alreadyRatedBuyer);
     }));
     listEl.innerHTML = cards.join("");
   } catch (e) {
