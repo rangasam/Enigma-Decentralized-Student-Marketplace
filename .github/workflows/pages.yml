@@ -16,17 +16,8 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    env:
-      ENIG_CREDIT_ADDRESS: ${{ secrets.ENIG_CREDIT_ADDRESS }}
-      MARKETPLACE_ADDRESS: ${{ secrets.MARKETPLACE_ADDRESS }}
-      REPUTATION_ADDRESS: ${{ secrets.REPUTATION_ADDRESS }}
     steps:
       - uses: actions/checkout@v4
-      - name: Inject contract addresses
-        run: |
-          sed -i "s|__ENIG_CREDIT_ADDRESS__|${ENIG_CREDIT_ADDRESS}|g" frontend/src/shared/config.js
-          sed -i "s|__MARKETPLACE_ADDRESS__|${MARKETPLACE_ADDRESS}|g" frontend/src/shared/config.js
-          sed -i "s|__REPUTATION_ADDRESS__|${REPUTATION_ADDRESS}|g" frontend/src/shared/config.js
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

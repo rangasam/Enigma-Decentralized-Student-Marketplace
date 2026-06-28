@@ -8,9 +8,9 @@ export const NETWORKS = {
   sepolia: {
     label: "Sepolia (hosted demo)", chainId: 11155111, rpcUrl: "https://ethereum-sepolia-rpc.publicnode.com", explorer: "https://sepolia.etherscan.io",
     addresses: {
-      EnigCredit: "__ENIG_CREDIT_ADDRESS__",
-      Marketplace: "__MARKETPLACE_ADDRESS__",
-      Reputation: "__REPUTATION_ADDRESS__",
+      EnigCredit: "0x7F2daef2De0aDb592d2BfF824e7D0bF0d4Cdfea5",
+      Marketplace: "0x1AC805Bd494e2B1393AA2EB9D4ab383A6ced6929",
+      Reputation: "0xcA7883465a699295C6Cb0d577ec5D4A620459e9F",
     },
   },
 };
