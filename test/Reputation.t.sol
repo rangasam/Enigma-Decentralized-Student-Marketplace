@@ -27,14 +27,14 @@ contract ReputationTest is Test {
         vm.prank(buyer); rep.rateUser(id, 5);
         (uint256 total, uint256 count) = rep.getAverageRating(seller);
         assertEq(total, 5); assertEq(count, 1);
-        assertTrue(rep.listingRated(id));
+        assertTrue(rep.buyerRatedSeller(id));
     }
     function test_RevertWhen_RateTwice() public {
         vm.prank(buyer); rep.rateUser(id, 4);
         vm.prank(buyer); vm.expectRevert(Reputation.AlreadyRated.selector); rep.rateUser(id, 4);
     }
     function test_RevertWhen_NonBuyerRates() public {
-        vm.prank(other); vm.expectRevert(Reputation.NotBuyer.selector); rep.rateUser(id, 5);
+        vm.prank(other); vm.expectRevert(Reputation.Unauthorized.selector); rep.rateUser(id, 5);
     }
     function test_RevertWhen_BadRating() public {
         vm.prank(buyer); vm.expectRevert(Reputation.BadRating.selector); rep.rateUser(id, 6);
