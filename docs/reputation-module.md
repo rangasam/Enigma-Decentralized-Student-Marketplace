@@ -33,4 +33,4 @@ rate after Sold (total/count + flag) · rate-twice revert (`AlreadyRated`) · no
 - [ ] star-picker widget · [ ] show avg on listing cards (batch read) · [ ] reputation analytics view.
 
 ## Walkthrough
-📸 Slice-4 validation (sell → buy → confirm → rate) on Local Anvil + Hosted Sepolia: follow Slice 1's dual-network pattern in [`network-tests.md`](network-tests.md). CLI reference: [`PROCEDURES.md`](PROCEDURES.md).
+📸 Slice-4 validation (sell → buy → confirm → rate) on Local Anvil + Hosted Sepolia: follow Slice 1's dual-network pattern in [`network-tests.md`](network-tests.html). CLI reference: [`PROCEDURES.md`](procedures.html).

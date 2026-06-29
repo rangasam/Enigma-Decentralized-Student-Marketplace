@@ -26,4 +26,4 @@ create stores + returns id · empty-title revert · zero-price revert · ids inc
 - [ ] search + category filter + sort · [ ] render avg rating per listing (read Slice 4) · [ ] image upload/IPFS.
 
 ## Walkthrough
-📸 Slice-2 validation (create → browse → cancel) on Local Anvil + Hosted Sepolia: follow Slice 1's dual-network pattern in [`network-tests.md`](network-tests.md). CLI reference: [`PROCEDURES.md`](PROCEDURES.md).
+📸 Slice-2 validation (create → browse → cancel) on Local Anvil + Hosted Sepolia: follow Slice 1's dual-network pattern in [`network-tests.md`](network-tests.html). CLI reference: [`PROCEDURES.md`](procedures.html).

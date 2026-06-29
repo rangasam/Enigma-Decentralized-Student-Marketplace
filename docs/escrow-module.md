@@ -33,4 +33,4 @@ purchase escrows tokens · self-purchase revert · confirm pays seller · cancel
 > Ratings live in **Slice 4 / `Reputation.sol`** (member4). This slice is **escrow only**: purchase (incl. `purchaseWithPermit`), confirm, cancel-after-timeout.
 
 ## Walkthrough
-📸 Slice-3 validation (approve → purchase → confirm/cancel) on Local Anvil + Hosted Sepolia: follow Slice 1's dual-network pattern in [`network-tests.md`](network-tests.md). CLI reference: [`PROCEDURES.md`](PROCEDURES.md).
+📸 Slice-3 validation (approve → purchase → confirm/cancel) on Local Anvil + Hosted Sepolia: follow Slice 1's dual-network pattern in [`network-tests.md`](network-tests.html). CLI reference: [`PROCEDURES.md`](procedures.html).
