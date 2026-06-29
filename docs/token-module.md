@@ -26,4 +26,4 @@ metadata · initial-supply-to-deployer · owner mint · non-owner mint revert ·
 - [x] faucet for demo top-ups · [ ] balance auto-refresh on account/chain change · [ ] "Switch to Sepolia" helper.
 
 ## Walkthrough
-📸 Validate mint / owner / faucet / balance on **both networks** (Local Anvil + Hosted Sepolia), step by step with screenshots: [`network-tests.md`](network-tests.md). CLI reference: [`PROCEDURES.md`](PROCEDURES.md).
+📸 Validate mint / owner / faucet / balance on **both networks** (Local Anvil + Hosted Sepolia), step by step with screenshots: [`network-tests.md`](network-tests.html). CLI reference: [`PROCEDURES.md`](procedures.html).

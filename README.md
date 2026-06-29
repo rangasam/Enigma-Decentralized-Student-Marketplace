@@ -91,12 +91,14 @@ Gas measured with `forge test --gas-report` (avg per call). Latency ≈ one bloc
 | rateUser | ~80,700 | ~12s | rating storage (first rating to a seller costs more) |
 
 ## Contribution statement
+How to record your evidence: [`docs/recording-evidence.md`](docs/recording-evidence.md).
+
 | Member | Slice | Branch | Evidence |
 |--------|-------|--------|----------|
-| member1 | Token + Wallet | `feature/member1-token` | _screenshot / test output_ |
-| member2 | Listings | `feature/member2-listings` | _…_ |
-| member3 | Escrow / Trade | `feature/member3-escrow` | _…_ |
-| member4 | Reputation / Ratings | `feature/member4-reputation` | _…_ |
+| member1 | Token + Wallet | `feature/member1-token` | EnigCreditTest 10/10 · [walkthrough §A–B](docs/network-tests.md) · [screenshots](docs/resources/token-wallet/) |
+| member2 | Listings | `feature/member2-listings` | ListingsTest · [walkthrough §C–D](docs/network-tests.md) · [screenshots](docs/resources/listings/) |
+| member3 | Escrow / Trade | `feature/member3-escrow` | EscrowTest · [walkthrough §C–D](docs/network-tests.md) · [screenshots](docs/resources/escrow/) |
+| member4 | Reputation / Ratings | `feature/member4-reputation` | ReputationTest · [walkthrough §C–D](docs/network-tests.md) · [screenshots](docs/resources/reputation/) |
 
 ## 🔐 Security, standards & study
 - [`SECURITY_ASSURANCE.md`](SECURITY_ASSURANCE.md) · [`docs/token-standards.md`](docs/token-standards.md) · [`docs/study-guide.md`](docs/study-guide.md) · Slither + fuzz/invariant (`test/Invariant.t.sol`).
