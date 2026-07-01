@@ -11,10 +11,6 @@ const avgOut = (m, type = "") => {
   const el = document.getElementById("avg-out");
   el.textContent = m; el.className = "status-box" + (type ? " " + type : "");
 };
-const lookupOut = (m, type = "") => {
-  const el = document.getElementById("lookup-out");
-  el.textContent = m; el.className = "status-box" + (type ? " " + type : "");
-};
 
 let wc;
 let currentUserAddress = null;
@@ -144,13 +140,11 @@ async function handleRate(btn, id, stars) {
   }
 }
 
-// ── RIGHT: your score + recent ratings received ───────────────────────────
+// ── RIGHT: your score ──────────────────────────────────────────────────────
 async function loadMyReputation() {
   const scoreWrap = document.getElementById("my-rep-result");
-  const recentWrap = document.getElementById("recent-ratings-wrap");
   if (!currentUserAddress) {
     scoreWrap.style.display = "none";
-    recentWrap.innerHTML = `<div class="escrow-empty">Connect your wallet to view your reputation.</div>`;
     return;
   }
   try {
@@ -169,53 +163,7 @@ async function loadMyReputation() {
       scoreWrap.style.display = "block";
       avgOut("", "");
     }
-
-    // Recent ratings — query last 5000 blocks
-    recentWrap.innerHTML = `<div class="escrow-empty">Loading recent ratings…</div>`;
-    const provider = rc.reputation.runner.provider;
-    const latestBlock = await provider.getBlockNumber();
-    const fromBlock = Math.max(0, latestBlock - 5000);
-    const filter = rc.reputation.filters.RatingSubmitted();
-    const logs = await rc.reputation.queryFilter(filter, fromBlock, "latest");
-    const mine = logs
-      .filter(e => e.args.rated.toLowerCase() === currentUserAddress.toLowerCase())
-      .sort((a, b) => b.blockNumber - a.blockNumber)
-      .slice(0, 5);
-
-    if (mine.length === 0) {
-      recentWrap.innerHTML = `<div class="escrow-empty">No ratings received yet.</div>`;
-      return;
-    }
-    recentWrap.innerHTML = mine.map(e => {
-      const stars = Number(e.args.rating);
-      const listingId = Number(e.args.listingId);
-      const raterShort = e.args.rater.slice(0, 6) + "…" + e.args.rater.slice(-4);
-      return `<div class="escrow-pending-item">
-        <div class="escrow-pending-item-meta">
-          <span>${"★".repeat(stars)}${"☆".repeat(5 - stars)}</span>
-          <span>Listing #${listingId}</span>
-        </div>
-        <div class="escrow-pending-item-meta"><span>From: ${raterShort}</span></div>
-      </div>`;
-    }).join("");
   } catch (e) {
-    recentWrap.innerHTML = `<div class="escrow-empty" style="color:var(--danger)">${e.message || e}</div>`;
+    avgOut(String(e.message || e), "err");
   }
 }
-
-// ── Look up any seller ────────────────────────────────────────────────────
-document.getElementById("lookup").addEventListener("click", async () => {
-  try {
-    const rc = readContracts();
-    const seller = document.getElementById("seller").value.trim();
-    if (!seller) { lookupOut("Enter a seller address.", "err"); return; }
-    lookupOut("Looking up reputation…", "pending");
-    const [total, count] = await rc.reputation.getAverageRating(seller);
-    const n = Number(count);
-    if (!n) { lookupOut("No ratings found for this address yet.", ""); return; }
-    const avg = (Number(total) / n).toFixed(2);
-    lookupOut(`${seller.slice(0, 10)}… → ${avg} ★ (${n} rating${n === 1 ? "" : "s"})`, "ok");
-  } catch (e) {
-    lookupOut(String(e.message || e), "err");
-  }
-});
