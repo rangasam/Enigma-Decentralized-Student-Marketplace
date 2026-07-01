@@ -121,16 +121,47 @@ document.getElementById("buy").onclick = async () => {
     const balance = await rc.token.balanceOf(buyerAddr);
     if (balance < l.priceInTokens) { out(friendlyError({ message: "ERC20InsufficientBalance" }), "err"); return; }
 
+    // Single-transaction purchase via EIP-2612 permit: the buyer signs an
+    // off-chain approval (no gas, no wallet tx), then ONE on-chain call both
+    // approves and escrows. Replaces the old approve() + purchaseItem() double tx.
     setStep(1);
-    out("Step 1 / 2 — Approving ENGC transfer…", "pending");
-    const a = await wc.token.approve(net().addresses.Marketplace, l.priceInTokens);
-    await a.wait();
+    out("Step 1 / 2 — Sign the purchase approval (no gas)…", "pending");
+    const deadline = Math.floor(Date.now() / 1000) + 3600; // valid for 1 hour
+    const nonce = await rc.token.nonces(buyerAddr);
+    const domain = {
+      name: "EnigCredit",
+      version: "1",
+      chainId: net().chainId,
+      verifyingContract: net().addresses.EnigCredit,
+    };
+    const types = {
+      Permit: [
+        { name: "owner", type: "address" },
+        { name: "spender", type: "address" },
+        { name: "value", type: "uint256" },
+        { name: "nonce", type: "uint256" },
+        { name: "deadline", type: "uint256" },
+      ],
+    };
+    const message = {
+      owner: buyerAddr,
+      spender: net().addresses.Marketplace,
+      value: l.priceInTokens,
+      nonce,
+      deadline,
+    };
+    const sig = await signer.signTypedData(domain, types, message);
+    // Split the 65-byte signature into v, r, s (no extra libs needed).
+    const r = sig.slice(0, 66);
+    const s = "0x" + sig.slice(66, 130);
+    const v = parseInt(sig.slice(130, 132), 16);
+
     setStep(2);
     out("Step 2 / 2 — Purchasing (locking tokens in escrow)…", "pending");
-    const p = await wc.marketplace.purchaseItem(currentListingId);
+    const p = await wc.marketplace.purchaseWithPermit(currentListingId, deadline, v, r, s);
     await p.wait();
     setStep(3);
-    out("✅ Purchased — tokens held in escrow. Confirm delivery in the right column once you receive the item.", "ok");
+    out("✅ Purchased in one transaction — tokens held in escrow. Confirm delivery in the right column once you receive the item.", "ok");
     loadListingDetail(currentListingId);
     refreshPendingPurchases();
   } catch (e) { out(friendlyError(e), "err"); }
