@@ -12,7 +12,7 @@ Five defender-relevant axes: **functional correctness** (unit-test pass rate ove
 
 ## Methodology
 
-All measurements use the Foundry toolchain. Functional correctness is established with `forge test` over per-slice suites (`EnigCreditTest`, `ListingsTest`, `EscrowTest`, `ReputationTest`); adversarial robustness adds property-based fuzzing and stateful invariant tests (`Invariant.t.sol`). Gas is collected with `forge test --gas-report` (average per call). Static analysis runs Slither as a required CI job on every pull request. The contracts are deployed both to a local Anvil chain (chainId 31337) and to the public Sepolia testnet (chainId 11155111), and exercised end-to-end through a dual-network ethers.js web client. The entire pipeline re-runs automatically in CI, making every reported result reproducible from a clean checkout.
+All measurements use the Foundry toolchain. Functional correctness is established with `forge test` over per-slice suites (`EnigCreditTest`, `ListingsTest`, `EscrowTest`, `ReputationTest`); adversarial robustness adds property-based fuzzing and stateful invariant tests (`Invariant.t.sol`). Gas is collected with `forge test --gas-report` (average per call). Static analysis runs Slither in CI on every pull request (currently configured as non-blocking). The contracts are deployed both to a local Anvil chain (chainId 31337) and to the public Sepolia testnet (chainId 11155111), and exercised end-to-end through a dual-network ethers.js web client. The entire pipeline re-runs automatically in CI, making every reported result reproducible from a clean checkout.
 
 ## Empirical evidence
 
